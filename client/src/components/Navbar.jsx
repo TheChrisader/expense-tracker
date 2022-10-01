@@ -14,7 +14,7 @@ const StyledNavbar = styled.nav`
 
 const NavbarIcon = styled.div`
   position: relative;
-  height: 90px;
+  height: 100px;
   background-color: #9e7070;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;

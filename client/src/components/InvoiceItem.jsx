@@ -8,7 +8,7 @@ const ItemWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   max-width: 100%;
-  padding: 25px 20px;
+  padding: 20px;
   border-radius: 10px;
   border: 1px solid transparent;
   transition: border-color 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);

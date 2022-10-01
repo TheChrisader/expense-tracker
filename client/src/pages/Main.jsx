@@ -13,7 +13,9 @@ const Wrapper = styled.main`
 
 const Container = styled.section`
   padding: 20px;
+  margin-bottom: 50px;
   width: 750px;
+  height: fit-content;
   margin-top: 50px;
 `;
 
