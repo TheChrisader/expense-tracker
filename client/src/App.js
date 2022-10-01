@@ -20,7 +20,7 @@ function App() {
   return (
     <ThemeProvider theme={isThemeLight ? lightTheme : darkTheme}>
       <AppWrapper>
-        <Navbar />
+        <Navbar themeState={isThemeLight} setState={setisThemeLight} />
         <Main />
       </AppWrapper>
     </ThemeProvider>
