@@ -11,7 +11,8 @@ const ItemWrapper = styled.div`
   padding: 20px;
   border-radius: 10px;
   border: 1px solid transparent;
-  transition: border-color 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: border-color 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    background-color 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   cursor: pointer;
 
   &:hover {
