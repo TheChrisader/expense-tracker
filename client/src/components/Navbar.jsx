@@ -10,12 +10,13 @@ const StyledNavbar = styled.nav`
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   background-color: ${(props) => props.theme.colors.main.primaryDark};
+  z-index: 50;
 `;
 
 const NavbarIcon = styled.div`
   position: relative;
   height: 100px;
-  background-color: #9e7070;
+  background-color: ${(props) => props.theme.colors.main.primary};
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   margin-bottom: auto;
@@ -65,7 +66,7 @@ const Navbar = ({ themeState, setState }) => {
     <StyledNavbar>
       <NavbarIcon />
       <Toggle onClick={handleClick}>
-        {themeState ? <BrightnessHighRoundedIcon /> : <Brightness3Icon />}
+        {themeState ? <Brightness3Icon /> : <BrightnessHighRoundedIcon />}
       </Toggle>
       <ModalWrapper>
         <Modal></Modal>
