@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import AddIcon from "@mui/icons-material/Add";
 import InvoiceItems from "../components/InvoiceItems";
+import ExpenseForm from "./ExpenseForm";
 
 const Wrapper = styled.main`
   flex: 1;
@@ -78,15 +79,18 @@ const Icon = styled.div`
 `;
 
 const Main = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <Wrapper>
+      <ExpenseForm isOpen={isOpen} setState={setIsOpen} />
       <Container>
         <HeaderWrapper>
           <HeaderContainer>
             <Header>Frugal</Header>
             <SubHeader>There are zero invoices</SubHeader>
           </HeaderContainer>
-          <Button>
+          <Button onClick={() => setIsOpen(true)}>
             <Icon>
               <AddIcon />
             </Icon>
