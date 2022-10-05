@@ -1,4 +1,5 @@
 export const lightTheme = {
+  mode: "light",
   colors: {
     main: {
       primary: "#7C5DFA",
@@ -19,6 +20,7 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
+  mode: "dark",
   colors: {
     main: {
       primary: "#7C5DFA",
