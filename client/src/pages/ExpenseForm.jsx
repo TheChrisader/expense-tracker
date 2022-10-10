@@ -68,6 +68,7 @@ const Button = styled.button`
 
 const ModalBackground = styled(motion.div)`
   position: fixed;
+  left: 0;
   backdrop-filter: blur(2px);
   width: 100%;
   height: 100%;
