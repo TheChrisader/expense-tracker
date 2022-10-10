@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 import AddIcon from "@mui/icons-material/Add";
 import InvoiceItems from "../components/InvoiceItems";
 import ExpenseForm from "./ExpenseForm";
-
-const Wrapper = styled.main`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  overflow-y: auto;
-`;
 
 const Container = styled.section`
   padding: 20px;
@@ -78,11 +72,35 @@ const Icon = styled.div`
   color: ${(props) => props.theme.colors.main.primary};
 `;
 
+const animation = {
+  visible: {
+    marginRight: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      duration: 0.7,
+    },
+  },
+  hidden: {
+    marginRight: "100%",
+    opacity: 0,
+    transition: {
+      duration: 0.25,
+    },
+  },
+};
+
 const Main = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Wrapper>
+    <motion.main
+      variants={animation}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+      key="main"
+    >
       <ExpenseForm isOpen={isOpen} setState={setIsOpen} />
       <Container>
         <HeaderWrapper>
@@ -99,7 +117,7 @@ const Main = () => {
         </HeaderWrapper>
         <InvoiceItems />
       </Container>
-    </Wrapper>
+    </motion.main>
   );
 };
 
