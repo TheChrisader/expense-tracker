@@ -11,6 +11,13 @@ const StyledNavbar = styled.nav`
   border-bottom-right-radius: 20px;
   background-color: ${(props) => props.theme.colors.main.primaryDark};
   z-index: 50;
+
+  @media screen and (max-width: 950px) {
+    flex-direction: row;
+    width: 100%;
+    height: 60px;
+    border-radius: 0;
+  }
 `;
 
 const NavbarIcon = styled.div`
@@ -20,6 +27,13 @@ const NavbarIcon = styled.div`
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   margin-bottom: auto;
+
+  @media screen and (max-width: 950px) {
+    width: 60px;
+    height: 100%;
+    margin-bottom: 0;
+    margin-right: auto;
+  }
 `;
 
 const Toggle = styled.button`
@@ -39,6 +53,10 @@ const Toggle = styled.button`
   &:active {
     color: ${(props) => props.theme.colors.main.primaryDark};
   }
+
+  @media screen and (max-width: 950px) {
+    margin: auto 0;
+  }
 `;
 
 const ModalWrapper = styled.div`
@@ -48,6 +66,15 @@ const ModalWrapper = styled.div`
   padding-bottom: 30px;
   margin-top: 25px;
   border-top: 1px solid ${(props) => props.theme.colors.main.primaryLight};
+
+  @media screen and (max-width: 950px) {
+    padding: 0 30px;
+    border-top: none;
+    border-left: 1px solid ${(props) => props.theme.colors.main.primaryLight};
+    margin-top: 0;
+    margin-left: 25px;
+    align-items: center;
+  }
 `;
 
 const Modal = styled.button`

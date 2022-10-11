@@ -12,12 +12,24 @@ const Wrapper = styled(motion.section)`
   height: 100vh;
   padding: 60px;
   background-color: ${(props) => props.theme.colors.main.background};
-  width: calc(50% - 120px);
+  width: 550px;
   position: fixed;
   left: 80px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   z-index: 20;
+  transition: left 0.5s ease;
+  overflow-y: auto;
+
+  @media screen and (max-width: 950px) {
+    left: 0;
+    height: calc(100vh - 60px);
+  }
+
+  @media screen and (max-width: 550px) {
+    width: 100%;
+    border-radius: 0;
+  }
 `;
 
 const Title = styled.h1`

@@ -6,12 +6,28 @@ import AddIcon from "@mui/icons-material/Add";
 import InvoiceItems from "../components/InvoiceItems";
 import ExpenseForm from "./ExpenseForm";
 
+const Page = styled(motion.div)`
+  @media screen and (max-width: 750px) {
+    width: 100%;
+    min-width: 100%;
+  }
+`;
+
 const Container = styled.section`
   padding: 20px;
   margin-bottom: 50px;
   width: 750px;
   height: fit-content;
   margin-top: 50px;
+  transition: margin-top 0.5s ease;
+
+  @media screen and (max-width: 950px) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 750px) {
+    margin-top: 30px;
+  }
 `;
 
 const HeaderWrapper = styled.div`
@@ -94,7 +110,7 @@ const Main = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <motion.main
+    <Page
       variants={animation}
       initial="hidden"
       animate="visible"
@@ -117,7 +133,7 @@ const Main = () => {
         </HeaderWrapper>
         <InvoiceItems />
       </Container>
-    </motion.main>
+    </Page>
   );
 };
 

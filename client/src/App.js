@@ -16,6 +16,14 @@ const AppWrapper = styled.main`
   background-color: ${(props) => props.theme.colors.main.background};
   transition: background-color 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
   overflow: hidden;
+
+  @media screen and (max-width: 950px) {
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 750px) {
+    width: 100%;
+  }
 `;
 
 const Content = styled.main`
@@ -24,6 +32,10 @@ const Content = styled.main`
   justify-content: center;
   overflow-y: auto;
   overflow-x: hidden;
+
+  @media screen and (max-width: 750px) {
+    width: 100%;
+  }
 `;
 
 function App() {
@@ -35,7 +47,7 @@ function App() {
       <AppWrapper>
         <Navbar themeState={isThemeLight} setState={setisThemeLight} />
         <Content>
-          <AnimatePresence exitBeforeEnter>
+          <AnimatePresence mode="wait">
             <Routes key={location.pathname} location={location}>
               <Route path="/" element={<Main />} />
               <Route path="/id" element={<EntryDetail />} />

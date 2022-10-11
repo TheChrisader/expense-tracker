@@ -11,6 +11,14 @@ const Container = styled.div`
   width: 750px;
   height: fit-content;
   margin-top: 50px;
+
+  @media screen and (max-width: 950px) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 750px) {
+    margin-top: 30px;
+  }
 `;
 
 const ReturnLink = styled(Link)`
@@ -45,17 +53,34 @@ const StatusWrapper = styled.section`
   padding: 25px;
   border-radius: 10px;
   margin-bottom: 20px;
+
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+  }
 `;
 
 const TopContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    justify-content: ${(props) => props.space};
+  }
 `;
 
 const Span = styled.span`
   color: ${(props) => props.theme.colors.text.secondary};
   font-weight: 300;
+
+  @media screen and (max-width: 450px) {
+    font-weight: 500;
+    font-size: 20px;
+  }
 `;
 
 const Label = styled.div`
@@ -190,11 +215,11 @@ const EntryDetail = () => {
           Go Back
         </ReturnLink>
         <StatusWrapper>
-          <TopContainer>
-            <Span>Status</Span>
-            <Label>Paid</Label>
+          <TopContainer space="space-around">
+            <Span>STATUS:</Span>
+            <Label>Cash In</Label>
           </TopContainer>
-          <TopContainer>
+          <TopContainer space="center">
             <Button onClick={() => setIsOpen(true)}>Edit</Button>
             <Button>Delete</Button>
           </TopContainer>

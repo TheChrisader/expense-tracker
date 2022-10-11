@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 
-const ItemWrapper = styled.div`
+const ItemWrapper = styled(Link)`
   background-color: ${(props) => props.theme.colors.main.white};
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-width: 100%;
   max-width: 100%;
   padding: 20px;
   border-radius: 10px;
@@ -24,14 +27,21 @@ const Details = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+
+  @media screen and (max-width: 750px) {
+    flex-direction: column;
+    align-items: ${(props) => props.align};
+    gap: 5px;
+  }
 `;
 
-const ItemDetail = styled.span`
+const ItemDetail = styled(motion.span)`
   color: ${(props) =>
-    props.primary
+    props.$primaryColor
       ? props.theme.colors.text.primary
       : props.theme.colors.text.secondary};
   font-size: ${(props) => (props.fontSize ? props.fontSize : "16px")};
+  font-weight: ${(props) => props.weight};
 `;
 
 const Hash = styled.span`
@@ -44,27 +54,55 @@ const Label = styled.div`
   padding: 5px 30px;
   font-weight: 500;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &::before {
+    content: "";
+    display: block;
+    left: 0;
+    background-color: ${(props) => props.theme.colors.main.success};
+    width: 8px;
+    height: 8px;
+    border-radius: 50px;
+  }
+
+  @media screen and (max-width: 450px) {
+    padding: 5px 10px;
+  }
+`;
+
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media screen and (max-width: 750px) {
+    display: none;
+  }
 `;
 
 const InvoiceItem = () => {
   return (
-    <ItemWrapper>
-      <Details>
-        <ItemDetail primary>
+    <ItemWrapper to="/id">
+      <Details align="start">
+        <ItemDetail $primaryColor weight={500} layout>
           <Hash>#</Hash>RT3080
         </ItemDetail>
-        <ItemDetail>Due 20 Sep 2022</ItemDetail>
+        <ItemDetail>20 Sep 2022</ItemDetail>
         <ItemDetail>Uzumaki Naruto</ItemDetail>
       </Details>
-      <Details>
-        <ItemDetail primary fontSize="20px">
+      <Details align="flex-end">
+        <ItemDetail $primaryColor fontSize="20px" weight={500}>
           $1800.89
         </ItemDetail>
         <ItemDetail>
-          <Label>Paid</Label>
+          <Label>Cash In</Label>
         </ItemDetail>
         <ItemDetail>
-          <KeyboardArrowRightRoundedIcon />
+          <IconWrapper>
+            <KeyboardArrowRightRoundedIcon />
+          </IconWrapper>
         </ItemDetail>
       </Details>
     </ItemWrapper>
