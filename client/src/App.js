@@ -20,10 +20,6 @@ const AppWrapper = styled.main`
   @media screen and (max-width: 950px) {
     flex-direction: column;
   }
-
-  @media screen and (max-width: 750px) {
-    width: 100%;
-  }
 `;
 
 const Content = styled.main`
@@ -32,10 +28,6 @@ const Content = styled.main`
   justify-content: center;
   overflow-y: auto;
   overflow-x: hidden;
-
-  @media screen and (max-width: 750px) {
-    width: 100%;
-  }
 `;
 
 function App() {
