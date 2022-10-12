@@ -16,6 +16,7 @@ const InputLabel = styled.span`
 
 const Input = styled.input`
   height: 45px;
+  color: ${(props) => props.theme.colors.text.primary};
   background-color: ${(props) =>
     props.theme.mode === "light"
       ? props.theme.colors.main.white
@@ -23,9 +24,34 @@ const Input = styled.input`
   border: 1px solid
     ${(props) =>
       props.valid
-        ? props.theme.mode === "light"
-          ? "rgb(223, 227, 250)"
-          : "rgb(37, 41, 69)"
+        ? props.theme.colors.main.primaryBorder
+        : props.theme.colors.main.danger};
+  border-radius: 5px;
+  padding: 15px;
+  transition: border 0.1s;
+
+  &:active,
+  &:focus {
+    outline: none;
+    border: 1px solid ${(props) => props.theme.colors.main.primary};
+  }
+`;
+
+const TextArea = styled.textarea`
+  height: fit-content;
+  max-height: 100px;
+  min-height: fit-content;
+  max-width: 100%;
+  min-width: 100%;
+  color: ${(props) => props.theme.colors.text.primary};
+  background-color: ${(props) =>
+    props.theme.mode === "light"
+      ? props.theme.colors.main.white
+      : props.theme.colors.main.primaryDark};
+  border: 1px solid
+    ${(props) =>
+      props.valid
+        ? props.theme.colors.main.primaryBorder
         : props.theme.colors.main.danger};
   border-radius: 5px;
   padding: 15px;
@@ -42,13 +68,21 @@ const ErrorMessage = styled(FormikError)`
   color: ${(props) => props.theme.colors.main.danger};
 `;
 
-const Field = ({ label, ...props }) => {
+const Field = ({ label, textarea, children, ...props }) => {
   const [field, meta] = useField(props);
   return (
     <>
       <InputWrapper>
         <InputLabel>{label}</InputLabel>
-        <Input {...field} valid={!(meta.touched && meta.error)} {...props} />
+        {textarea ? (
+          <TextArea
+            {...field}
+            valid={!(meta.touched && meta.error)}
+            {...props}
+          />
+        ) : (
+          <Input {...field} valid={!(meta.touched && meta.error)} {...props} />
+        )}
         <ErrorMessage name={props.name} component="span" />
       </InputWrapper>
     </>
