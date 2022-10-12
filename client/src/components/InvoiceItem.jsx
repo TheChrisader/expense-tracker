@@ -9,6 +9,7 @@ const ItemWrapper = styled(Link)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 15px;
   min-width: 100%;
   max-width: 100%;
   padding: 20px;
@@ -90,7 +91,7 @@ const InvoiceItem = () => {
           <Hash>#</Hash>RT3080
         </ItemDetail>
         <ItemDetail>20 Sep 2022</ItemDetail>
-        <ItemDetail>Uzumaki Naruto</ItemDetail>
+        <ItemDetail>Online</ItemDetail>
       </Details>
       <Details align="flex-end">
         <ItemDetail $primaryColor fontSize="20px" weight={500}>
