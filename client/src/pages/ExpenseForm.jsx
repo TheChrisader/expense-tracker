@@ -2,9 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { Formik, Form as FormikForm } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
+import { db } from "../firebase";
 import { initialValues, validationSchema } from "../utils/Form";
 import Field from "../components/shared/Field";
+import Radio from "../components/shared/Radio";
+import Selector from "../components/shared/Selector";
 
 const Wrapper = styled(motion.section)`
   display: flex;
@@ -45,7 +49,25 @@ const FormContainer = styled(FormikForm)`
 `;
 
 const FormInputs = styled.div`
-  margin-bottom: auto;
+  margin-bottom: 30px;
+  overflow-y: auto;
+  height: 55vh;
+`;
+
+const CashTypeWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+`;
+
+const OptionsWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+
+  @media screen and (max-width: 470px) {
+    flex-direction: column;
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -122,7 +144,29 @@ const backgroundAnimation = {
   },
 };
 
+const categoryOptions = [
+  { value: "Salary", label: "Salary" },
+  { value: "Dontations", label: "Donations" },
+];
+
+const modeOptions = [
+  { value: "Cash", label: "Cash" },
+  { value: "Online", label: "Onine" },
+];
+
 const ExpenseForm = ({ isOpen, setState }) => {
+  const handleSubmit = async (data) => {
+    try {
+      await addDoc(collection(db, "entries"), {
+        ...data,
+        date: Timestamp.now(),
+      });
+      setState(false);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -138,19 +182,44 @@ const ExpenseForm = ({ isOpen, setState }) => {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={(values) => console.log(values)}
+              onSubmit={(values) => handleSubmit(values)}
             >
               <FormContainer>
                 <FormInputs>
+                  <CashTypeWrapper>
+                    <Radio
+                      name="cashType"
+                      value="Cash In"
+                      label="Cash-In"
+                      type="in"
+                      id="Cash-In"
+                    />
+                    <Radio
+                      name="cashType"
+                      value="Cash Out"
+                      label="Cash-Out"
+                      type="out"
+                      id="Cash-Out"
+                    />
+                  </CashTypeWrapper>
                   <Field name="amount" type="number" label="Amount" />
-                  <Field name="remark" type="text" label="Remark" />
-                  <Field name="thing" type="text" label="Thing" />
+                  <Field name="remark" type="text" label="Remark" textarea />
+                  <OptionsWrapper>
+                    <Selector
+                      name="category"
+                      placeholder="Category..."
+                      options={categoryOptions}
+                    />
+                    <Selector
+                      name="mode"
+                      placeholder="Payment Mode..."
+                      options={modeOptions}
+                    />
+                  </OptionsWrapper>
                 </FormInputs>
                 <ButtonWrapper>
                   <Button>Save as Draft</Button>
-                  <Button type="submit" onClick={() => setState(false)}>
-                    Save & Add New
-                  </Button>
+                  <Button type="submit">Save & Add New</Button>
                 </ButtonWrapper>
               </FormContainer>
             </Formik>
