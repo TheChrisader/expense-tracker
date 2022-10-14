@@ -13,6 +13,7 @@ import { AnimatePresence } from "framer-motion";
 const AppWrapper = styled.main`
   display: flex;
   height: 100vh;
+  /* min-width: 100%; */
   background-color: ${(props) => props.theme.colors.main.background};
   transition: background-color 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
   overflow: hidden;
@@ -26,6 +27,7 @@ const Content = styled.main`
   flex: 1;
   display: flex;
   justify-content: center;
+  /* min-width: 100%; */
   overflow-y: auto;
   overflow-x: hidden;
 `;
@@ -42,7 +44,7 @@ function App() {
           <AnimatePresence mode="wait">
             <Routes key={location.pathname} location={location}>
               <Route path="/" element={<Main />} />
-              <Route path="/id" element={<EntryDetail />} />
+              <Route path="/:id" element={<EntryDetail />} />
             </Routes>
           </AnimatePresence>
         </Content>
