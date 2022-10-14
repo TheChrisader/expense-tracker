@@ -217,7 +217,7 @@ const EntryDetail = () => {
   const [entryItem, setEntryItem] = useState(null);
 
   const location = useLocation();
-  const entryId = location.pathname.split("/")[1];
+  const entryId = location.pathname.split("/")[3];
 
   const navigate = useNavigate();
 
@@ -225,7 +225,7 @@ const EntryDetail = () => {
     const itemRef = doc(db, "entries", id);
     try {
       await deleteDoc(itemRef);
-      navigate("/");
+      navigate("/book/id");
     } catch (err) {
       console.error(err);
     }
@@ -258,7 +258,7 @@ const EntryDetail = () => {
     >
       <ExpenseForm isOpen={isOpen} setState={setIsOpen} entry={entryItem} />
       <Container>
-        <ReturnLink to="/">
+        <ReturnLink to="/book/id">
           <IconWrapper>
             <KeyboardArrowLeftRoundedIcon />
           </IconWrapper>

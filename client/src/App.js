@@ -9,6 +9,8 @@ import Navbar from "./components/Navbar";
 import { lightTheme, darkTheme } from "./theme";
 import EntryDetail from "./pages/EntryDetail";
 import { AnimatePresence } from "framer-motion";
+import Auth from "./pages/Auth";
+import Books from "./pages/Books";
 
 const AppWrapper = styled.main`
   display: flex;
@@ -43,8 +45,10 @@ function App() {
         <Content>
           <AnimatePresence mode="wait">
             <Routes key={location.pathname} location={location}>
-              <Route path="/" element={<Main />} />
-              <Route path="/:id" element={<EntryDetail />} />
+              <Route path="/" element={<Auth />} />
+              <Route path="/books" element={<Books />} />
+              <Route path="/book/:id" element={<Main />} />
+              <Route path="book/:id/:id" element={<EntryDetail />} />
             </Routes>
           </AnimatePresence>
         </Content>
