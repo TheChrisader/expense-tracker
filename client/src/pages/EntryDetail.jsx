@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
-import { useState } from "react";
+import { doc, query, deleteDoc, onSnapshot } from "firebase/firestore";
+
+import { db } from "../firebase";
 import ExpenseForm from "./ExpenseForm";
+
+const Page = styled(motion.div)`
+  @media screen and (max-width: 950px) {
+    width: 100%;
+    min-width: 100%;
+  }
+`;
 
 const Container = styled.div`
   padding: 20px;
   width: 750px;
+  min-width: 750px;
   height: fit-content;
   margin-top: 50px;
 
   @media screen and (max-width: 950px) {
     width: 100%;
+    min-width: 100%;
   }
 
   @media screen and (max-width: 750px) {
@@ -139,6 +150,12 @@ const TopWrapperEntry = styled.h2`
   color: ${(props) => props.theme.colors.text.primary};
   font-weight: 500;
   font-size: ${(props) => props.size};
+
+  @media screen and (max-width: 500px) {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 120px;
+  }
 `;
 
 const BottomWrapper = styled.div`
@@ -197,16 +214,49 @@ const animation = {
 
 const EntryDetail = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [entryItem, setEntryItem] = useState(null);
+
+  const location = useLocation();
+  const entryId = location.pathname.split("/")[1];
+
+  const navigate = useNavigate();
+
+  const handleDelete = async (id) => {
+    const itemRef = doc(db, "entries", id);
+    try {
+      await deleteDoc(itemRef);
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        const q = await query(doc(db, "entries", entryId));
+        onSnapshot(q, (doc) => {
+          setEntryItem({
+            id: doc.id,
+            data: doc.data(),
+          });
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchItem();
+  }, []);
 
   return (
-    <motion.main
+    <Page
       variants={animation}
       initial="hidden"
       animate="visible"
       exit="hidden"
       key="entryDetails"
     >
-      <ExpenseForm isOpen={isOpen} setState={setIsOpen} />
+      <ExpenseForm isOpen={isOpen} setState={setIsOpen} entry={entryItem} />
       <Container>
         <ReturnLink to="/">
           <IconWrapper>
@@ -221,16 +271,18 @@ const EntryDetail = () => {
           </TopContainer>
           <TopContainer space="center">
             <Button onClick={() => setIsOpen(true)}>Edit</Button>
-            <Button>Delete</Button>
+            <Button type="button" onClick={() => handleDelete(entryId)}>
+              Delete
+            </Button>
           </TopContainer>
         </StatusWrapper>
         <BodyWrapper>
           <TopWrapper>
             <AmountWrapper>
               <AmountTitle>Amount</AmountTitle>
-              <TopWrapperEntry>$400</TopWrapperEntry>
+              <TopWrapperEntry>${entryItem?.data?.amount}</TopWrapperEntry>
             </AmountWrapper>
-            <TopWrapperEntry size="20px">#RT3080</TopWrapperEntry>
+            <TopWrapperEntry size="20px">#{entryId}</TopWrapperEntry>
           </TopWrapper>
           <BottomWrapper>
             <BottomWrapperItem>
@@ -239,23 +291,18 @@ const EntryDetail = () => {
             </BottomWrapperItem>
             <BottomWrapperItem>
               <ItemTitle>Payment Method</ItemTitle>
-              <Item>Cash</Item>
+              <Item>{entryItem?.data?.mode}</Item>
             </BottomWrapperItem>
             <BottomWrapperItem>
               <ItemTitle>Category</ItemTitle>
-              <Item>Salary</Item>
+              <Item>{entryItem?.data?.category}</Item>
             </BottomWrapperItem>
           </BottomWrapper>
           <RemarksTitle>Remarks:</RemarksTitle>
-          <Remarks>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta
-            inventore, doloribus, dolore facilis non dicta nobis voluptatem quia
-            possimus quasi eaque ab quisquam, fuga sunt officia accusantium
-            aspernatur porro? Tenetur!
-          </Remarks>
+          <Remarks>{entryItem?.data?.remark}</Remarks>
         </BodyWrapper>
       </Container>
-    </motion.main>
+    </Page>
   );
 };
 

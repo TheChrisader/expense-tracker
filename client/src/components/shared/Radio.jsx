@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useField, ErrorMessage as FormikError } from "formik";
 import styled from "styled-components";
 
@@ -36,7 +36,7 @@ const Input = styled.input`
   height: 0;
   width: 0;
 
-  &:focus + ${RadioWrapper} {
+  &:focus + ${RadioWrapper}, &:hover + ${RadioWrapper} {
     border: 1px solid ${(props) => props.theme.colors.main.primary};
   }
 `;
@@ -54,9 +54,19 @@ const InputComponent = ({ children, ...props }) => {
   );
 };
 
-const Radio = ({ label, type, ...props }) => {
+const Radio = ({ label, type, check, ...props }) => {
+  const [uselessRefresh, setUselessRefresh] = useState("");
   const inputRef = useRef(null);
   const [field, meta] = useField(props);
+
+  useEffect(() => {
+    if (check && inputRef.current) {
+      inputRef.current.checked = true;
+      setUselessRefresh(" ");
+      console.log(inputRef.current.checked);
+    }
+  }, []);
+
   return (
     <label htmlFor={props.id}>
       <InputComponent
@@ -69,7 +79,7 @@ const Radio = ({ label, type, ...props }) => {
       >
         <RadioWrapper checked={inputRef.current?.checked} type={type}>
           <CashType checked={inputRef.current?.checked}>
-            Cash {type === "in" ? "In" : "Out"}
+            Cash {type === "in" ? "In" : `Out${uselessRefresh}`}
           </CashType>
         </RadioWrapper>
       </InputComponent>

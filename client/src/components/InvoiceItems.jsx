@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 
+import { db } from "../firebase";
 import InvoiceItem from "./InvoiceItem";
 
 const ItemsWrapper = styled.section`
@@ -8,12 +10,44 @@ const ItemsWrapper = styled.section`
   flex-direction: column;
   gap: 20px;
 `;
-let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-const InvoiceItems = () => {
+const InvoiceItems = ({ setEntryCount }) => {
+  const [expenseItems, setExpenseItems] = useState([]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const q = await query(
+          collection(db, "entries"),
+          orderBy("date", "desc")
+        );
+        onSnapshot(q, (querySnapshot) => {
+          let items = [];
+          querySnapshot.docs.map((doc) =>
+            items.push({
+              id: doc.id,
+              data: doc.data(),
+            })
+          );
+          setExpenseItems(items);
+          setEntryCount(items.length);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchItems();
+  }, []);
+
   return (
     <ItemsWrapper>
-      {arr.map((item, i) => (
-        <InvoiceItem key={i} />
+      {expenseItems.map((item, i) => (
+        <InvoiceItem
+          key={i}
+          id={item.id}
+          category={item.data.category}
+          amount={item.data.amount}
+          type={item.data.cashType}
+        />
       ))}
     </ItemsWrapper>
   );

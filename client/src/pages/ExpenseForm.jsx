@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Formik, Form as FormikForm } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, doc, addDoc, updateDoc } from "firebase/firestore";
 
 import { db } from "../firebase";
-import { initialValues, validationSchema } from "../utils/Form";
+import { validationSchema } from "../utils/Form";
 import Field from "../components/shared/Field";
 import Radio from "../components/shared/Radio";
 import Selector from "../components/shared/Selector";
@@ -154,16 +154,35 @@ const modeOptions = [
   { value: "Online", label: "Onine" },
 ];
 
-const ExpenseForm = ({ isOpen, setState }) => {
+const ExpenseForm = ({ isOpen, setState, entry }) => {
+  const initialValues = {
+    amount: entry?.data?.amount || "",
+    remark: entry?.data?.remark || "",
+    cashType: entry?.data?.cashType || "",
+    category: entry?.data?.category || "",
+  };
+
   const handleSubmit = async (data) => {
     try {
       await addDoc(collection(db, "entries"), {
         ...data,
-        date: Timestamp.now(),
+        date: Date.now(),
       });
       setState(false);
     } catch (err) {
       alert(err);
+    }
+  };
+
+  const handleUpdate = async (data, id) => {
+    const itemRef = doc(db, "entries", id);
+    try {
+      await updateDoc(itemRef, {
+        ...data,
+      });
+      setState(false);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -182,46 +201,53 @@ const ExpenseForm = ({ isOpen, setState }) => {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={(values) => handleSubmit(values)}
+              onSubmit={(values) =>
+                entry ? handleUpdate(values, entry.id) : handleSubmit(values)
+              }
             >
-              <FormContainer>
-                <FormInputs>
-                  <CashTypeWrapper>
-                    <Radio
-                      name="cashType"
-                      value="Cash In"
-                      label="Cash-In"
-                      type="in"
-                      id="Cash-In"
-                    />
-                    <Radio
-                      name="cashType"
-                      value="Cash Out"
-                      label="Cash-Out"
-                      type="out"
-                      id="Cash-Out"
-                    />
-                  </CashTypeWrapper>
-                  <Field name="amount" type="number" label="Amount" />
-                  <Field name="remark" type="text" label="Remark" textarea />
-                  <OptionsWrapper>
-                    <Selector
-                      name="category"
-                      placeholder="Category..."
-                      options={categoryOptions}
-                    />
-                    <Selector
-                      name="mode"
-                      placeholder="Payment Mode..."
-                      options={modeOptions}
-                    />
-                  </OptionsWrapper>
-                </FormInputs>
-                <ButtonWrapper>
-                  <Button>Save as Draft</Button>
-                  <Button type="submit">Save & Add New</Button>
-                </ButtonWrapper>
-              </FormContainer>
+              {({ values }) => (
+                <FormContainer>
+                  {console.log(values)}
+                  <FormInputs>
+                    <CashTypeWrapper>
+                      <Radio
+                        name="cashType"
+                        value="Cash In"
+                        label="Cash-In"
+                        type="in"
+                        id="Cash-In"
+                        check={entry?.data?.cashType === "Cash In"}
+                      />
+                      <Radio
+                        name="cashType"
+                        value="Cash Out"
+                        label="Cash-Out"
+                        type="out"
+                        id="Cash-Out"
+                        check={entry?.data?.cashType === "Cash Out"}
+                      />
+                    </CashTypeWrapper>
+                    <Field name="amount" type="number" label="Amount" />
+                    <Field name="remark" type="text" label="Remark" textarea />
+                    <OptionsWrapper>
+                      <Selector
+                        name="category"
+                        placeholder="Category..."
+                        options={categoryOptions}
+                      />
+                      <Selector
+                        name="mode"
+                        placeholder="Payment Mode..."
+                        options={modeOptions}
+                      />
+                    </OptionsWrapper>
+                  </FormInputs>
+                  <ButtonWrapper>
+                    <Button>Save as Draft</Button>
+                    <Button type="submit">Save & Add New</Button>
+                  </ButtonWrapper>
+                </FormContainer>
+              )}
             </Formik>
           </Wrapper>
           <ModalBackground

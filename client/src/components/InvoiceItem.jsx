@@ -43,6 +43,17 @@ const ItemDetail = styled(motion.span)`
       : props.theme.colors.text.secondary};
   font-size: ${(props) => (props.fontSize ? props.fontSize : "16px")};
   font-weight: ${(props) => props.weight};
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media screen and (max-width: 750px) {
+    overflow: visible;
+  }
+
+  @media screen and (max-width: 450px) {
+    overflow: hidden;
+  }
 `;
 
 const Hash = styled.span`
@@ -50,9 +61,15 @@ const Hash = styled.span`
 `;
 
 const Label = styled.div`
-  color: ${(props) => props.theme.colors.main.success};
-  background-color: ${(props) => props.theme.colors.main.successBg};
-  padding: 5px 30px;
+  color: ${(props) =>
+    props.type === "Cash In"
+      ? props.theme.colors.main.success
+      : props.theme.colors.main.danger};
+  background-color: ${(props) =>
+    props.type === "Cash In"
+      ? props.theme.colors.main.successBg
+      : props.theme.colors.main.dangerBg};
+  padding: 5px 20px;
   font-weight: 500;
   border-radius: 10px;
   display: flex;
@@ -63,7 +80,10 @@ const Label = styled.div`
     content: "";
     display: block;
     left: 0;
-    background-color: ${(props) => props.theme.colors.main.success};
+    background-color: ${(props) =>
+      props.type === "Cash In"
+        ? props.theme.colors.main.success
+        : props.theme.colors.main.danger};
     width: 8px;
     height: 8px;
     border-radius: 50px;
@@ -83,22 +103,23 @@ const IconWrapper = styled.div`
   }
 `;
 
-const InvoiceItem = () => {
+const InvoiceItem = ({ id, category, amount, type }) => {
   return (
-    <ItemWrapper to="/id">
+    <ItemWrapper to={`/${id}`}>
       <Details align="start">
-        <ItemDetail $primaryColor weight={500} layout>
-          <Hash>#</Hash>RT3080
+        <ItemDetail $primaryColor weight={500}>
+          <Hash>#</Hash>
+          {id}
         </ItemDetail>
         <ItemDetail>20 Sep 2022</ItemDetail>
-        <ItemDetail>Online</ItemDetail>
+        <ItemDetail>{category}</ItemDetail>
       </Details>
       <Details align="flex-end">
         <ItemDetail $primaryColor fontSize="20px" weight={500}>
-          $1800.89
+          ${amount}
         </ItemDetail>
         <ItemDetail>
-          <Label>Cash In</Label>
+          <Label type={type}>{type}</Label>
         </ItemDetail>
         <ItemDetail>
           <IconWrapper>

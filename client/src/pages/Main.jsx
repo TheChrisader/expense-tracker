@@ -7,7 +7,7 @@ import InvoiceItems from "../components/InvoiceItems";
 import ExpenseForm from "./ExpenseForm";
 
 const Page = styled(motion.div)`
-  @media screen and (max-width: 750px) {
+  @media screen and (max-width: 950px) {
     width: 100%;
     min-width: 100%;
   }
@@ -17,12 +17,14 @@ const Container = styled.section`
   padding: 20px;
   margin-bottom: 50px;
   width: 750px;
+  min-width: 750px;
   height: fit-content;
   margin-top: 50px;
   transition: margin-top 0.5s ease;
 
   @media screen and (max-width: 950px) {
     width: 100%;
+    min-width: 100%;
   }
 
   @media screen and (max-width: 750px) {
@@ -108,6 +110,7 @@ const animation = {
 
 const Main = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [entryCount, setEntryCount] = useState(0);
 
   return (
     <Page
@@ -122,7 +125,7 @@ const Main = () => {
         <HeaderWrapper>
           <HeaderContainer>
             <Header>Frugal</Header>
-            <SubHeader>There are zero invoices</SubHeader>
+            <SubHeader>There are {entryCount} entries</SubHeader>
           </HeaderContainer>
           <Button onClick={() => setIsOpen(true)}>
             <Icon>
@@ -131,7 +134,7 @@ const Main = () => {
             New Invoice
           </Button>
         </HeaderWrapper>
-        <InvoiceItems />
+        <InvoiceItems setEntryCount={setEntryCount} />
       </Container>
     </Page>
   );

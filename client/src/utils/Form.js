@@ -1,12 +1,5 @@
 import * as Yup from "yup";
 
-export const initialValues = {
-  amount: "",
-  remark: "",
-  cashType: "",
-  category: "",
-};
-
 export const validationSchema = Yup.object().shape({
   amount: Yup.number()
     .typeError("Invalid Input")
