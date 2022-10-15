@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { logout } from "../utils/Auth";
+import { useNavigate } from "react-router-dom";
 
 import AddIcon from "@mui/icons-material/Add";
 import InvoiceItems from "../components/InvoiceItems";
@@ -111,6 +113,7 @@ const animation = {
 const Main = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [entryCount, setEntryCount] = useState(0);
+  const navigate = useNavigate();
 
   return (
     <Page
@@ -124,6 +127,14 @@ const Main = () => {
       <Container>
         <HeaderWrapper>
           <HeaderContainer>
+            <button
+              onClick={() => {
+                logout();
+                navigate("/");
+              }}
+            >
+              Logout
+            </button>
             <Header>Frugal</Header>
             <SubHeader>There are {entryCount} entries</SubHeader>
           </HeaderContainer>

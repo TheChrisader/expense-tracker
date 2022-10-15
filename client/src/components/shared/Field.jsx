@@ -5,6 +5,7 @@ import styled from "styled-components";
 const InputWrapper = styled.label`
   display: flex;
   flex-direction: column;
+  width: 100%;
   margin-bottom: 40px;
 `;
 
@@ -16,6 +17,8 @@ const InputLabel = styled.span`
 
 const Input = styled.input`
   height: 45px;
+  max-width: 100%;
+  min-width: 100%;
   color: ${(props) => props.theme.colors.text.primary};
   background-color: ${(props) =>
     props.theme.mode === "light"

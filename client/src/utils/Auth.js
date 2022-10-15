@@ -7,7 +7,7 @@ import {
   signOut,
 } from "firebase/auth";
 
-import { collection, getDocs, addDoc, query } from "firebase/firestore";
+import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
 
 import { db, auth } from "../firebase";
 

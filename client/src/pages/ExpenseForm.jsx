@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Formik, Form as FormikForm } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 import { collection, doc, addDoc, updateDoc } from "firebase/firestore";
 
 import { db } from "../firebase";
@@ -155,6 +156,9 @@ const modeOptions = [
 ];
 
 const ExpenseForm = ({ isOpen, setState, entry }) => {
+  const location = useLocation();
+  const userID = location.pathname.split("/")[1];
+
   const initialValues = {
     amount: entry?.data?.amount || "",
     remark: entry?.data?.remark || "",
@@ -166,6 +170,7 @@ const ExpenseForm = ({ isOpen, setState, entry }) => {
     try {
       await addDoc(collection(db, "entries"), {
         ...data,
+        user: userID,
         date: Date.now(),
       });
       setState(false);

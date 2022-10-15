@@ -212,7 +212,7 @@ const animation = {
   },
 };
 
-const EntryDetail = () => {
+const EntryDetail = ({ userID }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [entryItem, setEntryItem] = useState(null);
 
@@ -225,7 +225,7 @@ const EntryDetail = () => {
     const itemRef = doc(db, "entries", id);
     try {
       await deleteDoc(itemRef);
-      navigate("/book/id");
+      navigate(`/${userID}/book/`);
     } catch (err) {
       console.error(err);
     }
@@ -258,7 +258,7 @@ const EntryDetail = () => {
     >
       <ExpenseForm isOpen={isOpen} setState={setIsOpen} entry={entryItem} />
       <Container>
-        <ReturnLink to="/book/id">
+        <ReturnLink to={`/${userID}/book/`}>
           <IconWrapper>
             <KeyboardArrowLeftRoundedIcon />
           </IconWrapper>

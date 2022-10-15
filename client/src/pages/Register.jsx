@@ -7,7 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import * as Yup from "yup";
 
 import { auth } from "../firebase";
-import { signInWithGoogle, loginWithEmailAndPassword } from "../utils/Auth";
+import { signInWithGoogle, registerWithEmailAndPassword } from "../utils/Auth";
 import Field from "../components/shared/Field";
 
 const Page = styled(motion.div)`
@@ -39,8 +39,7 @@ const Container = styled.section`
 const AuthTitle = styled.h1`
   color: ${(props) => props.theme.colors.text.primary};
   font-weight: 500;
-  margin-top: 30px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 `;
 
 const FormContainer = styled(FormikForm)`
@@ -49,18 +48,6 @@ const FormContainer = styled(FormikForm)`
   height: 100%;
   align-items: center;
   justify-content: center;
-`;
-
-const RegisterLinkWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-`;
-
-const RegisterLink = styled(Link)`
-  color: ${(props) => props.theme.colors.main.primary};
-  margin-top: -20px;
 `;
 
 const Button = styled.button`
@@ -108,7 +95,7 @@ const animation = {
     },
   },
   hidden: {
-    marginRight: "100%",
+    marginRight: "-100%",
     opacity: 0,
     transition: {
       duration: 0.25,
@@ -117,51 +104,51 @@ const animation = {
 };
 
 const initialValues = {
+  name: "",
   email: "",
   password: "",
 };
 
-const Auth = ({ userID }) => {
+const Register = () => {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
-      navigate(`/${userID}/book`);
+      navigate(`/${user.uid}/book`);
     }
   }, [user, loading]);
 
   return (
-    <Page
-      variants={animation}
-      initial="hidden"
-      animate="visible"
-      exit="hidden"
-      key="login"
-    >
+    <Page variants={animation} initial="hidden" animate="visible" exit="hidden">
       <Container>
-        <AuthTitle>Sign In to Frugal</AuthTitle>
+        <AuthTitle>Register for a Frugal Account</AuthTitle>
         <Formik
           initialValues={initialValues}
           validationSchema={Yup.object().shape({
+            name: Yup.string().min(3).required("- Please input your name"),
             email: Yup.string()
               .email("Invalid e-mail format")
               .required("- Please input your e-mail"),
-            password: Yup.string().required("- Please input your password"),
+            password: Yup.string()
+              .min(5)
+              .required("- Please input your password"),
           })}
           onSubmit={(values) =>
-            loginWithEmailAndPassword(values.email, values.password)
+            registerWithEmailAndPassword(
+              values.name,
+              values.email,
+              values.password
+            )
           }
         >
           <FormContainer>
+            <Field name="name" type="name" label="Name" />
             <Field name="email" type="email" label="Email" />
             <Field name="password" type="password" label="Password" />
-            <RegisterLinkWrapper>
-              <RegisterLink to="register">Don't have an Account?</RegisterLink>
-            </RegisterLinkWrapper>
-            <Button type="submit">Sign In</Button>
+            <Button type="submit">Create&nbsp;Account</Button>
             <Button type="button" onClick={signInWithGoogle} google>
-              Sign In with Google
+              Sign In With Google
             </Button>
           </FormContainer>
         </Formik>
@@ -170,4 +157,4 @@ const Auth = ({ userID }) => {
   );
 };
 
-export default Auth;
+export default Register;

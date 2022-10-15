@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 
 import Main from "./pages/Main";
@@ -11,6 +11,9 @@ import EntryDetail from "./pages/EntryDetail";
 import { AnimatePresence } from "framer-motion";
 import Auth from "./pages/Auth";
 import Books from "./pages/Books";
+import Register from "./pages/Register";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { useAuthListener } from "./utils/hooks/useAuthStatus";
 
 const AppWrapper = styled.main`
   display: flex;
@@ -37,7 +40,10 @@ const Content = styled.main`
 function App() {
   const [isThemeLight, setisThemeLight] = useState(true);
 
+  const { userId } = useAuthListener();
+
   const location = useLocation();
+  console.log(userId);
   return (
     <ThemeProvider theme={isThemeLight ? lightTheme : darkTheme}>
       <AppWrapper>
@@ -45,10 +51,24 @@ function App() {
         <Content>
           <AnimatePresence mode="wait">
             <Routes key={location.pathname} location={location}>
-              <Route path="/" element={<Auth />} />
-              <Route path="/books" element={<Books />} />
-              <Route path="/book/:id" element={<Main />} />
-              <Route path="book/:id/:id" element={<EntryDetail />} />
+              <Route path="/" element={<Auth userID={userId} />} />
+              <Route path="/register" element={<Register userID={userId} />} />
+              <Route
+                path="/:userId/book"
+                element={
+                  <ProtectedRoute>
+                    <Main />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/:userId/book/:id"
+                element={
+                  <ProtectedRoute>
+                    <EntryDetail userID={userId} />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </AnimatePresence>
         </Content>

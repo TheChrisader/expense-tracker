@@ -105,7 +105,7 @@ const IconWrapper = styled.div`
 
 const InvoiceItem = ({ id, category, amount, type }) => {
   return (
-    <ItemWrapper to={`/book/id/${id}`}>
+    <ItemWrapper to={`${id}`}>
       <Details align="start">
         <ItemDetail $primaryColor weight={500}>
           <Hash>#</Hash>

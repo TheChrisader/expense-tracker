@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import { useLocation } from "react-router-dom";
+import {
+  collection,
+  query,
+  orderBy,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 
 import { db } from "../firebase";
 import InvoiceItem from "./InvoiceItem";
@@ -13,12 +20,16 @@ const ItemsWrapper = styled.section`
 const InvoiceItems = ({ setEntryCount }) => {
   const [expenseItems, setExpenseItems] = useState([]);
 
+  const location = useLocation();
+  const userID = location.pathname.split("/")[1];
+
   useEffect(() => {
     const fetchItems = async () => {
       try {
         const q = await query(
           collection(db, "entries"),
-          orderBy("date", "desc")
+          where("user", "==", userID)
+          // orderBy("date", "desc")
         );
         onSnapshot(q, (querySnapshot) => {
           let items = [];
