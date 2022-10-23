@@ -5,15 +5,14 @@ import { ThemeProvider } from "styled-components";
 
 import Main from "./pages/Main";
 import Navbar from "./components/Navbar";
-
 import { lightTheme, darkTheme } from "./theme";
 import EntryDetail from "./pages/EntryDetail";
 import { AnimatePresence } from "framer-motion";
 import Auth from "./pages/Auth";
-import Books from "./pages/Books";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuthListener } from "./utils/hooks/useAuthStatus";
+import { useLocalStorage } from "./utils/hooks/useLocalStorage";
 
 const AppWrapper = styled.main`
   display: flex;
@@ -38,12 +37,11 @@ const Content = styled.main`
 `;
 
 function App() {
-  const [isThemeLight, setisThemeLight] = useState(true);
+  const [isThemeLight, setisThemeLight] = useLocalStorage("themeBool", true);
 
   const { userId } = useAuthListener();
 
   const location = useLocation();
-  console.log(userId);
   return (
     <ThemeProvider theme={isThemeLight ? lightTheme : darkTheme}>
       <AppWrapper>
