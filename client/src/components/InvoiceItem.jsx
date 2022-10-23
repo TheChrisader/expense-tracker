@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
+import { FaChevronRight } from "react-icons/fa";
 
 const ItemWrapper = styled(Link)`
   background-color: ${(props) => props.theme.colors.main.white};
@@ -97,13 +97,14 @@ const Label = styled.div`
 const IconWrapper = styled.div`
   display: flex;
   align-items: center;
+  color: ${(props) => props.theme.colors.main.primary};
 
   @media screen and (max-width: 750px) {
     display: none;
   }
 `;
 
-const InvoiceItem = ({ id, category, amount, type }) => {
+const InvoiceItem = ({ id, category, amount, type, date }) => {
   return (
     <ItemWrapper to={`${id}`}>
       <Details align="start">
@@ -111,7 +112,7 @@ const InvoiceItem = ({ id, category, amount, type }) => {
           <Hash>#</Hash>
           {id}
         </ItemDetail>
-        <ItemDetail>20 Sep 2022</ItemDetail>
+        <ItemDetail>{new Date(date).toDateString()}</ItemDetail>
         <ItemDetail>{category}</ItemDetail>
       </Details>
       <Details align="flex-end">
@@ -123,7 +124,7 @@ const InvoiceItem = ({ id, category, amount, type }) => {
         </ItemDetail>
         <ItemDetail>
           <IconWrapper>
-            <KeyboardArrowRightRoundedIcon />
+            <FaChevronRight />
           </IconWrapper>
         </ItemDetail>
       </Details>

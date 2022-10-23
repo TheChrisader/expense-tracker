@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { logout } from "../utils/Auth";
-import { useNavigate } from "react-router-dom";
 
-import AddIcon from "@mui/icons-material/Add";
+import { GoPlus } from "react-icons/go";
 import InvoiceItems from "../components/InvoiceItems";
 import ExpenseForm from "./ExpenseForm";
 
@@ -87,6 +85,10 @@ const Button = styled.button`
 const Icon = styled.div`
   width: 25px;
   height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
   background-color: white;
   border-radius: 50px;
   color: ${(props) => props.theme.colors.main.primary};
@@ -113,7 +115,6 @@ const animation = {
 const Main = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [entryCount, setEntryCount] = useState(0);
-  const navigate = useNavigate();
 
   return (
     <Page
@@ -127,20 +128,12 @@ const Main = () => {
       <Container>
         <HeaderWrapper>
           <HeaderContainer>
-            <button
-              onClick={() => {
-                logout();
-                navigate("/");
-              }}
-            >
-              Logout
-            </button>
             <Header>Frugal</Header>
             <SubHeader>There are {entryCount} entries</SubHeader>
           </HeaderContainer>
           <Button onClick={() => setIsOpen(true)}>
             <Icon>
-              <AddIcon />
+              <GoPlus />
             </Icon>
             New Invoice
           </Button>

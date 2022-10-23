@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
+import { FaChevronLeft } from "react-icons/fa";
 import { doc, query, deleteDoc, onSnapshot } from "firebase/firestore";
 
 import { db } from "../firebase";
@@ -95,8 +95,14 @@ const Span = styled.span`
 `;
 
 const Label = styled.div`
-  color: ${(props) => props.theme.colors.main.success};
-  background-color: ${(props) => props.theme.colors.main.successBg};
+  color: ${(props) =>
+    props.type === "Cash In"
+      ? props.theme.colors.main.success
+      : props.theme.colors.main.danger};
+  background-color: ${(props) =>
+    props.type === "Cash In"
+      ? props.theme.colors.main.successBg
+      : props.theme.colors.main.dangerBg};
   padding: 5px 30px;
   font-weight: 500;
   border-radius: 10px;
@@ -260,18 +266,26 @@ const EntryDetail = ({ userID }) => {
       <Container>
         <ReturnLink to={`/${userID}/book/`}>
           <IconWrapper>
-            <KeyboardArrowLeftRoundedIcon />
+            <FaChevronLeft />
           </IconWrapper>
           Go Back
         </ReturnLink>
         <StatusWrapper>
           <TopContainer space="space-around">
             <Span>STATUS:</Span>
-            <Label>Cash In</Label>
+            <Label type={entryItem?.data?.cashType}>
+              {entryItem?.data?.cashType || "..."}
+            </Label>
           </TopContainer>
           <TopContainer space="center">
-            <Button onClick={() => setIsOpen(true)}>Edit</Button>
-            <Button type="button" onClick={() => handleDelete(entryId)}>
+            <Button onClick={() => setIsOpen(true)} disabled={!entryItem}>
+              Edit
+            </Button>
+            <Button
+              type="button"
+              onClick={() => handleDelete(entryId)}
+              disabled={!entryItem}
+            >
               Delete
             </Button>
           </TopContainer>
@@ -280,26 +294,32 @@ const EntryDetail = ({ userID }) => {
           <TopWrapper>
             <AmountWrapper>
               <AmountTitle>Amount</AmountTitle>
-              <TopWrapperEntry>${entryItem?.data?.amount}</TopWrapperEntry>
+              <TopWrapperEntry>
+                ${entryItem?.data?.amount || "..."}
+              </TopWrapperEntry>
             </AmountWrapper>
-            <TopWrapperEntry size="20px">#{entryId}</TopWrapperEntry>
+            <TopWrapperEntry size="20px">#{entryId || "..."}</TopWrapperEntry>
           </TopWrapper>
           <BottomWrapper>
             <BottomWrapperItem>
               <ItemTitle>Date entered</ItemTitle>
-              <Item>18 Aug 2022</Item>
+              <Item>
+                {entryItem?.data?.date
+                  ? new Date(entryItem?.data?.date).toDateString()
+                  : "..."}
+              </Item>
             </BottomWrapperItem>
             <BottomWrapperItem>
               <ItemTitle>Payment Method</ItemTitle>
-              <Item>{entryItem?.data?.mode}</Item>
+              <Item>{entryItem?.data?.mode || "..."}</Item>
             </BottomWrapperItem>
             <BottomWrapperItem>
               <ItemTitle>Category</ItemTitle>
-              <Item>{entryItem?.data?.category}</Item>
+              <Item>{entryItem?.data?.category || "..."}</Item>
             </BottomWrapperItem>
           </BottomWrapper>
           <RemarksTitle>Remarks:</RemarksTitle>
-          <Remarks>{entryItem?.data?.remark}</Remarks>
+          <Remarks>{entryItem?.data?.remark || "..."}</Remarks>
         </BodyWrapper>
       </Container>
     </Page>

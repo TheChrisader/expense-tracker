@@ -147,12 +147,18 @@ const backgroundAnimation = {
 
 const categoryOptions = [
   { value: "Salary", label: "Salary" },
-  { value: "Dontations", label: "Donations" },
+  { value: "Donations", label: "Donations" },
+  { value: "Groceries", label: "Groceries" },
+  { value: "Sale", label: "Sale" },
+  { value: "Side Business", label: "Side Business" },
+  { value: "Misc", label: "Misc" },
 ];
 
 const modeOptions = [
   { value: "Cash", label: "Cash" },
-  { value: "Online", label: "Onine" },
+  { value: "Online", label: "Online" },
+  { value: "Bank", label: "Bank" },
+  { value: "Cheque", label: "Cheque" },
 ];
 
 const ExpenseForm = ({ isOpen, setState, entry }) => {
@@ -212,7 +218,6 @@ const ExpenseForm = ({ isOpen, setState, entry }) => {
             >
               {({ values }) => (
                 <FormContainer>
-                  {console.log(values)}
                   <FormInputs>
                     <CashTypeWrapper>
                       <Radio
@@ -248,7 +253,9 @@ const ExpenseForm = ({ isOpen, setState, entry }) => {
                     </OptionsWrapper>
                   </FormInputs>
                   <ButtonWrapper>
-                    <Button>Save as Draft</Button>
+                    <Button type="button" onClick={() => setState(false)}>
+                      Cancel
+                    </Button>
                     <Button type="submit">Save & Add New</Button>
                   </ButtonWrapper>
                 </FormContainer>

@@ -63,7 +63,6 @@ const Radio = ({ label, type, check, ...props }) => {
     if (check && inputRef.current) {
       inputRef.current.checked = true;
       setUselessRefresh(" ");
-      console.log(inputRef.current.checked);
     }
   }, []);
 

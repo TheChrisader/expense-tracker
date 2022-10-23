@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Formik, Form as FormikForm } from "formik";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { FcGoogle } from "react-icons/fc";
 import * as Yup from "yup";
 
 import { auth } from "../firebase";
@@ -41,6 +42,10 @@ const AuthTitle = styled.h1`
   font-weight: 500;
   margin-top: 30px;
   margin-bottom: 50px;
+
+  @media screen and (max-width: 400px) {
+    margin-top: 0;
+  }
 `;
 
 const FormContainer = styled(FormikForm)`
@@ -95,6 +100,10 @@ const Button = styled.button`
       props.google
         ? props.theme.colors.main.successBorder
         : props.theme.colors.main.primaryDark};
+  }
+
+  @media screen and (max-width: 400px) {
+    width: 100%;
   }
 `;
 
@@ -153,17 +162,32 @@ const Auth = ({ userID }) => {
             loginWithEmailAndPassword(values.email, values.password)
           }
         >
-          <FormContainer>
-            <Field name="email" type="email" label="Email" />
-            <Field name="password" type="password" label="Password" />
-            <RegisterLinkWrapper>
-              <RegisterLink to="register">Don't have an Account?</RegisterLink>
-            </RegisterLinkWrapper>
-            <Button type="submit">Sign In</Button>
-            <Button type="button" onClick={signInWithGoogle} google>
-              Sign In with Google
-            </Button>
-          </FormContainer>
+          {(values) => {
+            return (
+              <FormContainer>
+                <Field name="email" type="email" label="Email" />
+                <Field name="password" type="password" label="Password" />
+                <RegisterLinkWrapper>
+                  <RegisterLink to="register">
+                    Don't have an Account?
+                  </RegisterLink>
+                </RegisterLinkWrapper>
+                <Button type="submit">Sign In</Button>
+                <Button type="button" onClick={signInWithGoogle} google>
+                  Sign In with Google <FcGoogle />
+                </Button>
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    values.values.email = "admin@gmail.com";
+                    values.values.password = "admin1";
+                  }}
+                >
+                  Sign In as Ted
+                </Button>
+              </FormContainer>
+            );
+          }}
         </Formik>
       </Container>
     </Page>

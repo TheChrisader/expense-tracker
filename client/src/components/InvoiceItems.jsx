@@ -58,6 +58,7 @@ const InvoiceItems = ({ setEntryCount }) => {
           category={item.data.category}
           amount={item.data.amount}
           type={item.data.cashType}
+          date={item.data.date}
         />
       ))}
     </ItemsWrapper>
